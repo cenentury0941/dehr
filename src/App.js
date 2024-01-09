@@ -45,9 +45,9 @@ function App() {
     <BrowserRouter basename="/dehr">
     <Routes>
       <Route path="/test" element={<Test />} />
-      <Route path="/signin" element={<SignInSide />} />
+      <Route index path="/" element={<SignInSide />} />
       <Route path="/dashboard" element={<Dashboard/>} />
-      <Route index element={<PlaceholderIndex/>} /> 
+      <Route path="/temp" element={<PlaceholderIndex/>} /> 
     </Routes>
     </BrowserRouter>
 

@@ -17,10 +17,16 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
+import { mainListItems, secondaryListItems } from './listItems.js';
 import Chart from './Chart';
-import Deposits from './Deposits';
+import Deposits from './Deposits.js';
 import Orders from './Orders';
+import Graph from '../../components/Graph.js';
+import { useMessages } from '../../helpers/useMessages.js';
+import { useWeb5 } from '../../helpers/useWeb5.js';
+import { Fab } from '@mui/material';
+import FormDialog from './FormDialog.js';
+import ContentPasteOffIcon from '@mui/icons-material/ContentPasteOff';
 
 const darkTheme = createTheme({
   palette: {
@@ -32,12 +38,10 @@ const darkTheme = createTheme({
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
+        <Box sx={{display:"flex",flexDirection:"column", alignItems:"center"}}>
+        <ContentPasteOffIcon fontSize='large'/>
+        No More Documents To View
+        </Box>
     </Typography>
   );
 }
@@ -96,6 +100,21 @@ export default function Dashboard() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const [content,setContent] = React.useState("SHARED");
+  const { web5, myDid } = useWeb5();
+  const { messages, createMessage, updateMessage, deleteMessage } = useMessages(web5);
+  const [ did , setDid ] = React.useState("Loading")
+
+  React.useEffect( () => {
+    if(web5)
+    {
+      setDid(myDid)
+    }
+  } , [web5] )
+
+  React.useEffect( () => {
+    console.log(messages)
+  } , [messages] )
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -126,7 +145,7 @@ export default function Dashboard() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              DeHR - Your Did : {did}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -150,7 +169,7 @@ export default function Dashboard() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
+            {mainListItems(setContent)}
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
           </List>
@@ -169,41 +188,49 @@ export default function Dashboard() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            
+            {
+              content === "NETWORK" ? 
+              <Graph data={messages} /> :
+              content === "SHARED" ?              
             <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  <Chart />
-                </Paper>
-              </Grid>
-              {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  <Deposits />
-                </Paper>
-              </Grid>
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders />
-                </Paper>
-              </Grid>
+            {/* Chart */}
+            {/* <Grid item xs={12} md={8} lg={9}>
+              <Paper
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: 240,
+                }}
+              >
+                <Chart />
+              </Paper>
+            </Grid> */}
+            {/* Recent Deposits */}
+            
+
+            {messages.map((message) => {
+              return <Grid item xs={12} md={4} lg={3}>
+              <Paper
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: 240,
+                }}
+              >
+                <Deposits data={message} deleteMessage={deleteMessage}/>
+              </Paper>
             </Grid>
-            <Copyright sx={{ pt: 4 }} />
+            })}
+            <FormDialog createDocument={createMessage}/>
+            <div style={{height:"50px",width:"100%"}}></div>
+            <Copyright sx={{ pt: 4 , width:"100%" }} />
+
+            </Grid> :
+            <div></div>
+            }
           </Container>
         </Box>
       </Box>

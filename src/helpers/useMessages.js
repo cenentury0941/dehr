@@ -4,7 +4,10 @@ export function useMessages(web5) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    if (!web5) return;
+    if (!web5) {
+      console.log("Invalid web5")
+      return
+    };
 
     async function fetchMessages() {
       const { records } = await web5.dwn.records.query({
