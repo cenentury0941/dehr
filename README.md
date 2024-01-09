@@ -8,8 +8,12 @@ The inspiration for DeHR stemmed from the increasing frequency of major data bre
 ## What it does
 DeHR is a decentralized electronic health records platform powered by web5. It allows patients to securely store, manage, and share their health records across different healthcare providers. Through the use of decentralized web nodes and Unique Decentralized Identifiers (DIDs), DeHR ensures the privacy and security of patient data. Patients have full control over who can access their health records, facilitating seamless transitions between healthcare providers while maintaining data integrity.
 
+![Alt text](https://raw.githubusercontent.com/cenentury0941/Pictures/main/dehr01.jpg)
+
 ## How we built it
 The development of DeHR involved leveraging the capabilities of web5's decentralized infrastructure. We utilized web5's decentralized web nodes to store and distribute health records across a network of nodes, reducing the reliance on a centralized point of failure. The implementation of DIDs enabled patients to manage access and permissions to their data securely. The system was designed with a user-friendly interface to enhance the overall user experience for both patients and healthcare providers.
+
+![Alt text](https://raw.githubusercontent.com/cenentury0941/Pictures/main/dehr02.png)
 
 ## Challenges we ran into
 One significant challenge was ensuring the seamless interoperability of health records across diverse healthcare systems. 
